@@ -79,7 +79,6 @@ model_nir.load_weights(MODEL_NIR_PATH, by_name=True)
 print("Loading VIS model")
 model_vis.load_weights(MODEL_VIS_PATH, by_name=True)
 
-
 import matplotlib.pyplot as plt
 import os
 import glob
@@ -162,13 +161,15 @@ def runonFolder(imList,segmFolder,maskFolder,centered):
 
         try:
             im = imread(imList[i])
-            image = skimage.color.gray2rgb(im)
-            im, window, scale, padding, crop = utils.resize_image(
-            image,
-            min_dim=inference_config.IMAGE_MIN_DIM,
-            min_scale=inference_config.IMAGE_MIN_SCALE,
-            max_dim=inference_config.IMAGE_MAX_DIM,
-            mode="pad64")
+            im = skimage.color.gray2rgb(im)
+
+            # Resizing of the image
+            # im, window, scale, padding, crop = utils.resize_image(
+            # image,
+            # min_dim=inference_config.IMAGE_MIN_DIM,
+            # min_scale=inference_config.IMAGE_MIN_SCALE,
+            # max_dim=inference_config.IMAGE_MAX_DIM,
+            # mode="pad64")
 
             if "NIR" in imList[i]:
                 results = model_nir.detect([im], verbose=0)
@@ -184,7 +185,7 @@ def runonFolder(imList,segmFolder,maskFolder,centered):
             saveSubPath = os.path.join(*imList[i].split("/")[3:-1])
             saveName = imList[i].split("/")[-1]
 
-            saveName = re.sub('[.].*','.png',saveName)
+            saveName = re.sub('[.].*','.tiff',saveName)
 
             print(saveName)
 
@@ -231,13 +232,17 @@ def runonFolder(imList,segmFolder,maskFolder,centered):
 
 
             # Process and save the mask image without displaying it
-    #         saveName = re.sub('[.].*', '.png', saveName)
+            saveName = re.sub('[.].*', '.png', saveName)
 
             # Commenting out the line that visualizes and displays the image
-    #         visualize.display_instances(im, r['rois'], r['masks'], r['class_ids'], class_names, show_bbox=True, ax=get_ax())
+            # visualize.display_instances(im, r['rois'], r['masks'], r['class_ids'], class_names, show_bbox=True, ax=get_ax())
 
             maskPath = os.path.join(maskFolder, saveSubPath)
             os.makedirs(maskPath, exist_ok=True)
+
+            # print(mask.shape)
+            # print(r['masks'].shape)
+            # print(im.shape)
 
             matplotlib.image.imsave(os.path.join(maskPath, saveName), mask)
         
