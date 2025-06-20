@@ -31,7 +31,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 # Path to COCO trained weights
 # COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 
-MODEL_NIR_PATH = os.path.join(ROOT_DIR,"Weights/mask_rcnn_irises_ND.h5" )
+MODEL_NIR_PATH = os.path.join(ROOT_DIR,"Weights/mask_rcnn_irises_Casia.h5" )
 MODEL_VIS_PATH = os.path.join(ROOT_DIR,"Weights/mask_rcnn_irises_Ubiris.h5" )
 
 
